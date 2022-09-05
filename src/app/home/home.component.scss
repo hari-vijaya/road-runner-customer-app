@@ -1,0 +1,22 @@
+agm-map {
+  height: 500px;
+}
+
+.create-order-button {
+  width: 90vw;
+  margin: 20px;
+  min-height: 60px;
+  font-size: 1.3rem;
+}
+
+.place-search {
+  width: 100vw;
+}
+
+:host::ng-deep{
+  .mat-form-field-wrapper {
+    padding: 0 !important;
+  }
+}
+
+

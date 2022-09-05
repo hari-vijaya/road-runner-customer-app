@@ -1,0 +1,32 @@
+<form class="create-order-form">
+  <h1>Create Order</h1>
+  <mat-form-field class="place-search" appearance="outline">
+    <input [formControl]="capacityFormControl" required matInput class="form-control"
+           (keydown.enter)="$event.preventDefault()"
+           placeholder="Capacity" autocapitalize="off" type="text">
+  </mat-form-field>
+  <mat-form-field class="place-search" appearance="outline">
+    <input [formControl]="materialTypeFormControl" required matInput class="form-control"
+           (keydown.enter)="$event.preventDefault()"
+           placeholder="Material type" autocapitalize="off" type="text">
+  </mat-form-field>
+  <mat-form-field class="place-search" appearance="outline">
+    <input [formControl]="weightInKgFormControl" required matInput class="form-control"
+           (keydown.enter)="$event.preventDefault()" placeholder="Weight in kg">
+  </mat-form-field>
+  <mat-form-field class="place-search" appearance="outline">
+    <input [formControl]="addressFormControl" required matInput class="form-control"
+           (keydown.enter)="$event.preventDefault()" placeholder="Address">
+  </mat-form-field>
+  <mat-form-field class="place-search" appearance="outline">
+    <input [formControl]="landmarkFormControl" required matInput class="form-control"
+           (keydown.enter)="$event.preventDefault()" placeholder="Landmark">
+  </mat-form-field>
+  <div>
+    <button class="create-order-button" mat-raised-button color="primary" (click)="saveOrder()">Create Order
+    </button>
+  </div>
+</form>
+
+
+
