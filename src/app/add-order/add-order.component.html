@@ -1,32 +1,101 @@
 <form class="create-order-form">
   <h1>Create Order</h1>
-  <mat-form-field class="place-search" appearance="outline">
-    <input [formControl]="capacityFormControl" required matInput class="form-control"
-           (keydown.enter)="$event.preventDefault()"
-           placeholder="Capacity" autocapitalize="off" type="text">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Capacity</mat-label>
+    <mat-select [formControl]="capacityFormControl">
+      <mat-option *ngFor="let capacity of capacities" [value]="capacity.value">
+        {{ capacity.code }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="capacityFormControl.hasError('required')"
+      >Please select capacity</mat-error
+    >
   </mat-form-field>
-  <mat-form-field class="place-search" appearance="outline">
-    <input [formControl]="materialTypeFormControl" required matInput class="form-control"
-           (keydown.enter)="$event.preventDefault()"
-           placeholder="Material type" autocapitalize="off" type="text">
+  <mat-form-field appearance="outline">
+    <mat-label>Material Type</mat-label>
+    <mat-select [formControl]="materialTypeFormControl">
+      <mat-option
+        *ngFor="let materialType of materialTypes"
+        [value]="materialType.value"
+      >
+        {{ materialType.code }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="materialTypeFormControl.hasError('required')"
+      >Please select material type</mat-error
+    >
   </mat-form-field>
-  <mat-form-field class="place-search" appearance="outline">
-    <input [formControl]="weightInKgFormControl" required matInput class="form-control"
-           (keydown.enter)="$event.preventDefault()" placeholder="Weight in kg">
+  <mat-form-field appearance="outline">
+    <input
+      [formControl]="weightInKgFormControl"
+      required
+      matInput
+      class="form-control"
+      (keydown.enter)="$event.preventDefault()"
+      placeholder="Weight in kg"
+    />
+    <mat-error *ngIf="weightInKgFormControl.hasError('required')"
+      >Weight should not be empty</mat-error
+    >
   </mat-form-field>
-  <mat-form-field class="place-search" appearance="outline">
-    <input [formControl]="addressFormControl" required matInput class="form-control"
-           (keydown.enter)="$event.preventDefault()" placeholder="Address">
+  <mat-form-field appearance="outline">
+    <input
+      [formControl]="contactFormControl"
+      required
+      matInput
+      class="form-control"
+      (keydown.enter)="$event.preventDefault()"
+      placeholder="Contact number"
+    />
+    <mat-error *ngIf="contactFormControl.hasError('required')"
+      >Contact should not be empty</mat-error
+    >
   </mat-form-field>
-  <mat-form-field class="place-search" appearance="outline">
-    <input [formControl]="landmarkFormControl" required matInput class="form-control"
-           (keydown.enter)="$event.preventDefault()" placeholder="Landmark">
+  <mat-form-field appearance="outline">
+    <input
+      [formControl]="addressFormControl"
+      required
+      matInput
+      class="form-control"
+      (keydown.enter)="$event.preventDefault()"
+      placeholder="Delivery address"
+    />
+    <mat-error *ngIf="contactFormControl.hasError('required')"
+      >Address should not be empty</mat-error
+    >
   </mat-form-field>
+  <mat-form-field appearance="outline">
+    <input
+      [formControl]="pincodeFormControl"
+      required
+      matInput
+      class="form-control"
+      (keydown.enter)="$event.preventDefault()"
+      placeholder="Pincode"
+    />
+    <mat-error *ngIf="pincodeFormControl.hasError('required')"
+      >Pincode should not be empty</mat-error
+    >
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <input
+      [formControl]="landmarkFormControl"
+      matInput
+      class="form-control"
+      (keydown.enter)="$event.preventDefault()"
+      placeholder="Landmark"
+    />
+  </mat-form-field>
+
   <div>
-    <button class="create-order-button" mat-raised-button color="primary" (click)="saveOrder()">Create Order
+    <button
+      class="create-order-button"
+      mat-raised-button
+      color="primary"
+      (click)="saveOrder()"
+    >
+      Create Order
     </button>
   </div>
 </form>
-
-
-

@@ -1,47 +1,70 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {GooglePlaceDirective} from "ngx-google-places-autocomplete";
-import {Address} from "ngx-google-places-autocomplete/objects/address";
-import {distance} from "../utils/AppUtils";
-import {Router} from "@angular/router";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { distance } from '../utils/AppUtils';
+import { Router } from '@angular/router';
 import LatLng = google.maps.LatLng;
-
+import { MapsAPILoader } from '@agm/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
   originLat: number;
   originLng: number;
   destinationLat: number;
   destinationLng: number;
 
-  formattedAddress: string = "";
-  origin = {lat: 24.799448, lng: 120.979021};
-  destination = {lat: 24.799524, lng: 120.975017};
+  formattedAddress: string = '';
+  origin = { lat: 24.799448, lng: 120.979021 };
+  destination = { lat: 24.799524, lng: 120.975017 };
 
   isValidDistance: boolean = false;
   mapLoaded: boolean = false;
+
+  isDestinationAvailable = false;
+
+  markerOptions = {
+    origin: {
+      draggable: true,
+    },
+    destination: {
+      draggable: true,
+    },
+  };
+
+  renderOptions = {
+    suppressMarkers: true,
+  };
+
+  currentAddress: string;
+  private geoCoder: google.maps.Geocoder;
+
   @ViewChild('originInputRef')
   private originInputElementRef: GooglePlaceDirective;
 
   @ViewChild('destinationInputRef')
   private destinationInputElementRef: GooglePlaceDirective;
 
-  constructor(private router: Router) {
-
-  }
+  constructor(private router: Router, private mapsAPILoader: MapsAPILoader) {}
 
   ngOnInit(): void {
+    this.mapsAPILoader.load().then(() => {
+      this.setCurrentLocation();
+      this.geoCoder = new google.maps.Geocoder();
 
-    this.setCurrentLocation();
+    });
     setTimeout(() => {
       this.mapLoaded = true;
-    }, 5000)
 
 
+      let originElementAutocomplete = document.getElementById('originInputRef');
+      if (originElementAutocomplete !== null)
+        originElementAutocomplete.setAttribute('value', this.currentAddress);
+      console.log(this.currentAddress);
+    }, 5000);
   }
 
   public handleOriginAddressChange(address: Address) {
@@ -51,19 +74,35 @@ export class HomeComponent implements OnInit {
   }
 
   checkValidDistance() {
-    const distanceBetweenOriginAndDestination = distance(this.originLat, this.originLng, this.destinationLat, this.destinationLng, 'K');
+    const distanceBetweenOriginAndDestination = distance(
+      this.originLat,
+      this.originLng,
+      this.destinationLat,
+      this.destinationLng,
+      'K'
+    );
     if (distanceBetweenOriginAndDestination > 10) {
       this.isValidDistance = true;
     } else {
       this.isValidDistance = false;
     }
-    console.log("distance " + distance(this.originLat, this.originLng, this.destinationLat, this.destinationLng, 'K'));
+    console.log(
+      'distance ' +
+        distance(
+          this.originLat,
+          this.originLng,
+          this.destinationLat,
+          this.destinationLng,
+          'K'
+        )
+    );
   }
 
   public handleDestinationAddressChange(address: Address) {
     console.log(address);
     this.destinationLat = address.geometry.location.lat();
     this.destinationLng = address.geometry.location.lng();
+    this.isDestinationAvailable = true;
     this.checkValidDistance();
   }
 
@@ -74,8 +113,7 @@ export class HomeComponent implements OnInit {
         this.originLat = position.coords.latitude;
         this.originLng = position.coords.longitude;
 
-        this.destinationLat = position.coords.latitude;
-        this.destinationLng = position.coords.longitude;
+        this.getAddress(position.coords.latitude, position.coords.longitude);
 
         /*     this.getReverseGeocodingData(position.coords.latitude, position.coords.longitude);
              console.log(this.formattedAddress);
@@ -87,27 +125,24 @@ export class HomeComponent implements OnInit {
                destinationElementAutocomplete.setAttribute('value', this.formattedAddress);*/
       });
     }
-
   }
 
-  async getReverseGeocodingData(lat: number, lng: number) {
-    let isGeoCoderSuccess = false;
-    console.log(lat, lng);
-    var latlng: LatLng = new LatLng(lat, lng);
-    console.log(JSON.stringify(latlng));
-    // This is making the Geocode request
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({'location': latlng}, (results) => {
-        this.formattedAddress = results[0].formatted_address
-        isGeoCoderSuccess = true;
+  getAddress(latitude: number, longitude: number) {
+    this.geoCoder.geocode(
+      { location: { lat: latitude, lng: longitude } },
+      (results: { formatted_address: any }[], status: string) => {
+        if (status === 'OK') {
+          if (results[0]) {
+            this.currentAddress = results[0].formatted_address;
+          } else {
+            window.alert('No results found');
+          }
+        } else {
+          window.alert('Geocoder failed due to: ' + status);
+        }
       }
     );
-
-    /*while (!isGeoCoderSuccess) {
-      console.log("waiting");
-    }*/
   }
-
 
   navigateToCreateOrderPage() {
     sessionStorage.setItem('originLat', String(this.originLat));

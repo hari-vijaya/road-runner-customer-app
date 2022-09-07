@@ -1,24 +1,63 @@
 <mat-form-field class="place-search" appearance="outline">
-  <input matInput class="form-control" (keydown.enter)="$event.preventDefault()" ngx-google-places-autocomplete
-         placeholder="Search pickup location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
-         id="originInputRef"
-         #originInputRef="ngx-places" (onAddressChange)="handleOriginAddressChange($event)">
+  <input
+    matInput
+    class="form-control"
+    (keydown.enter)="$event.preventDefault()"
+    ngx-google-places-autocomplete
+    placeholder="Search pickup location"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="off"
+    type="text"
+    id="originInputRef"
+    #originInputRef="ngx-places"
+    (onAddressChange)="handleOriginAddressChange($event)"
+  />
 </mat-form-field>
 <mat-form-field class="place-search" appearance="outline">
-  <input matInput class="form-control" (keydown.enter)="$event.preventDefault()" ngx-google-places-autocomplete
-         placeholder="Search drop location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
-         id="destinationInputRef"
-         #destinationInputRef="ngx-places" (onAddressChange)="handleDestinationAddressChange($event)">
+  <input
+    matInput
+    class="form-control"
+    (keydown.enter)="$event.preventDefault()"
+    ngx-google-places-autocomplete
+    placeholder="Search drop location"
+    autocorrect="off"
+    autocapitalize="off"
+    spellcheck="off"
+    type="text"
+    id="destinationInputRef"
+    #destinationInputRef="ngx-places"
+    (onAddressChange)="handleDestinationAddressChange($event)"
+  />
 </mat-form-field>
 
-
-<agm-map *ngIf="mapLoaded" [latitude]="originLat" [longitude]="originLng">
+<agm-map
+  [zoom]="10"
+  *ngIf="mapLoaded"
+  [latitude]="originLat"
+  [longitude]="originLng"
+>
+  <agm-marker
+    *ngIf="!isDestinationAvailable"
+    [latitude]="this.originLat"
+    [longitude]="this.originLng"
+  ></agm-marker>
+  `
   <agm-direction
-    [origin]="{lat: this.originLat, lng: this.originLng}"
-    [destination]="{lat: this.destinationLat, lng: this.destinationLng}"
+    *ngIf="isDestinationAvailable"
+    [renderOptions]="renderOptions"
+    [markerOptions]="markerOptions"
+    [origin]="{ lat: this.originLat, lng: this.originLng }"
+    [destination]="{ lat: this.destinationLat, lng: this.destinationLng }"
   ></agm-direction>
 </agm-map>
 
-<button class="create-order-button" mat-raised-button color="primary" [disabled]="!isValidDistance"
-        (click)="navigateToCreateOrderPage()">Create Order
+<button
+  class="create-order-button"
+  mat-raised-button
+  color="primary"
+  [disabled]="!isValidDistance"
+  (click)="navigateToCreateOrderPage()"
+>
+  Create Order
 </button>

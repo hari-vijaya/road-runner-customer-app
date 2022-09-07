@@ -18,6 +18,9 @@ import {AgmDirectionModule} from "agm-direction";
 import {GooglePlaceModule} from "ngx-google-places-autocomplete";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MyOrdersComponent } from './my-orders/my-orders.component';
+import { MyAccountComponent } from './my-account/my-account.component';
 
 
 @NgModule({
@@ -26,7 +29,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AddOrderComponent,
     ToolBarComponent,
     HomeComponent,
-    BottomNavigationBarComponent
+    BottomNavigationBarComponent,
+    MyOrdersComponent,
+    MyAccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,16 +44,16 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatInputModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBWNCWizzY1UcYKTG8bzSQxV-gSerIojjg',
-      libraries: ['places']
+      libraries: ['places'],
     }),
     GooglePlaceModule,
     AgmDirectionModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

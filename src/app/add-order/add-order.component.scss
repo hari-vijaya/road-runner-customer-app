@@ -4,11 +4,7 @@
   flex-direction: column;
   justify-items: center;
   border: solid rgb(110, 108, 105, 0.2) 3px;
-  margin: 30px;
+  margin: 16px;
   border-radius: 5px;
-  padding: 40px;
-}
-
-:host::ng-deep {
-
+  padding: 15px;
 }

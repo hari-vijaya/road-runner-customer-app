@@ -1,1 +1,22 @@
-<p>bottom-navigation-bar works!</p>
+<mat-toolbar class="toolbarNav">
+  <button
+    mat-flat-button
+    routerLink="/home"
+    routerLinkActive="active-link"
+  >
+    <mat-icon class="material-icons color_blue">home</mat-icon>
+    <span>Home</span>
+  </button>
+  <button
+    mat-flat-button
+    routerLink="/my-orders"
+    routerLinkActive="active-link"
+  >
+    <mat-icon class="material-icons color_blue">format_list_bulleted</mat-icon>
+    <span>My Orders</span>
+  </button>
+  <button mat-flat-button routerLink="/my-account" routerLinkActive="active-link">
+    <mat-icon class="material-icons color_blue">account_circle</mat-icon>
+    <span>My Account</span>
+  </button>
+</mat-toolbar>
